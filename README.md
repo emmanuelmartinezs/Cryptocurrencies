@@ -168,18 +168,21 @@ Save your `crypto_clustering.ipynb` file to your **Cryptocurrencies** folder.
 ### Preprocessing the Data for PCA
 The following was done to preprocess the data:
 
-1. Remove cryptocurrencies that are not being traded.
-2. Keep all the cryptocurrencies that have a working algorithm; all have working algorithm
-3. The ```IsTrading``` column is unnecesssary; it was dropped.
-4. Rows that have at least one null value were removed.
-5. Filter dataset to reflect only coins that have been mined.
-6. Create a new DataFrame of cryptocurrency names ```CoinNames```, and use the index from the previous dataset as the index for this new DataFrame. DataFrame ```cc_names_df```   
+1. Remove cryptocurrencies not being traded.
+2. Keep all the cryptocurrencies that have a working algorithm
+3. The `IsTrading` column it was dropped.
+4. Rows that have null value were dropped.
+5. Filter dataset with only mined coins.
+6. Create a new DataFrame `CoinNames`, and use the index from the previous dataset as the index for this new DataFrame `cc_names_df`  
+
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s1.png)
 
-7. Remove the ```CoinName``` column from the DataFrame since it's not necessary for the clustering algorithm. Dataframe: ```crypto_df```    
+7. Remove `CoinName` unnecessary column from the DataFrame `crypto_df`    
+
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s2.png)
 
-Finally, using the ```get_dummies()``` method for columns ```Algorithm``` and ```ProofType``` and the StandardScaler ```fit_transform()``` function to standardize the features.  The resulting DataFrame has 98 columns, which cannot be shown fully here, but here is an excerpt:
+From `get_dummies()` method over columns `Algorithm` and `ProofType` and using the StandardScaler `fit_transform()` function to standardize the features. 
+
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s3.png)
 
 
@@ -221,7 +224,8 @@ Save your `crypto_clustering.ipynb` file to your **Cryptocurrencies** folder.
 ### Reducing Data Dimensions Using PCA
 The next steps involve, applying PCA to reduce the dimensions to 3 principal components.
 
-The resulting DataFrame, ```pcs_df``` now includes columns ```PC 1```, ```PC 2```, and ```PC 3```, and uses the index of the ```crypto_df``` DataFrame as the index.  Please see below:  
+The analysis from DataFrame, `pcs_df` includes columns `PC 1`, `PC 2`, and `PC 3`, and uses the index of the `crypto_df` DataFrame as the index.  
+
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s4.png)
 
 
@@ -264,21 +268,24 @@ Save your `crypto_clustering.ipynb` file to your **Cryptocurrencies** folder.
 ### DELIVERABLE RESULTS:
 ## Deliverable 3 
 ### Clustering Cryptocurrencies Using K-means
-To determine an appropriate number of clusters for the dataset ```pcs_df```, start with plotting an elbow curve with hvplot to find the value for K.  
+Run analysis of clusters for the dataset `pcs_df`, including plotting an elbow curve with `hvplot` to find the value for `K`.  
  
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s5.png)
 
 
-Based on the above curve, it looks like **4 clusters** is the place to start!
+Using the dataset and analysis we found that 4 clusters is the initial point.
 
 
-Using **K=4** and applying the K-means algorithm, provides the following predictions:
+By running an analysis using K=4 and applying the K-means algorithm, got the below results:
+
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s6.png)
 
-A new DataFrame, ```clustered_df``` is created by:
+Build a new dataframe names: `clustered_df` 
 
-*  Concatenating the ```crypto_df``` and ```pcs_df``` DataFrames with the same index as the crypto_df DataFrame. 
-*  Adding the ```CoinNames``` column from the ```cc_names_df``` dataset created earlier.  The resulting DataFrame:
+* Adding the `CoinNames` column from the `cc_names_df` dataset created.  
+* Merging the `crypto_df` and `pcs_df` DataFrames with the same index. 
+
+
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s7.png)
 
 
@@ -347,33 +354,31 @@ Save your `crypto_clustering.ipynb` file to your **Cryptocurrencies** folder.
 ## Deliverable 4
 ### Visualizing Cryptocurrencies Results
 
-With this new DataFrame, ```clustered_df``` , we start with a 3D Scatter plot using the Plotly Express **scatter_3d()** function to visualize the 4 Classes.  Each data point shows the ```CoinName``` and ```Algorithm``` data when hovering over.
-![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s8.png)
+A new dataset is created using the `MinMaxScaler().fit`_transform method to scale the `TotalCoinSupply` and `TotalCoinsMined` columns from the `clustered_df`, adding the `CoinName` from `cc_names_df` and the `Class` column from `clustered_df`.  
 
-
-Next, a table is created featuring the tradable cryptocurrencies using the **hvplot.table()** function.
-![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s9.png)
-
-The total number of tradable cryptocurrencies in the clustered_df DataFrame: 
-```The Total Number of tradable cryptocurrencies is 532.```
-
-For the last visualization, a new dataset is created using the  **MinMaxScaler().fit_transform** method to scale the ```TotalCoinSupply``` and ```TotalCoinsMined``` columns (range of zero and one) from the ```clustered_df```, adding the ```CoinName``` from ```cc_names_df``` and the ```Class``` column from ```clustered_df```.  The resulting DataFrame:
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s10.png)
 
 
-Finally, a 2D **hvplot scatter plot** with x="TotalCoinsMined_scaled", y="TotalCoinSupply_scaled", and by="Class" with the ```CoinName``` displayed when you hover over the the data point.
-![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s11.png))
+A table is created featuring the tradable cryptocurrencies using the `hvplot.table()`.
 
-This plot highlights the fact that Class 2 has only 1 cryptocurrency, **BitTorrent**, quite the outlier!
+![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s9.png)
 
-So, what if we increase to 5 clusters, another acceptable option to test?  What does that look like?
 
-Well, not terribly different...Class 2 is still only 1 coin, Class 3 is basically the same, and Classes 0 and 1 broke out into 3 Classes: 0, 1, 4.
+A 2D hvplot scatter plot with `x="TotalCoinsMined_scaled"`, `y="TotalCoinSupply_scaled"`, and `by="Class"` with the `CoinName` displayed.
 
-![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s12.png)
+![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s11.png)
+
+
+Class 2 and Class 3 are the same; Classes 0 and 1 gave out three different Classes: 0, 1, 4.
 
 ![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s13.png)
 
+![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s12.png)
+
+
+With this new DataFrame, `clustered_df` , we start with a 3D Scatter plot using the Plotly Express `scatter_3d()` function to visualize the 4 Classes.  
+
+![d1](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/s8.png)
 
 
 ##### Cryptocurrencies Completed by Emmanuel Martinez
