@@ -26,7 +26,7 @@ This new assignment consists of three technical analysis deliverables and a prop
 
 ## Resources and Before Start Notes:
 
-![logo](https://github.com/emmanuelmartinezs/Credit_Risk_Analysis/blob/main/Resources/Images/Header.jpg?raw=true)
+![logo](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/Header.jpg?raw=true)
 
 
 ### Supervised Machine Learning and Credit Risk
