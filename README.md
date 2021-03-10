@@ -1,26 +1,26 @@
 # Cryptocurrencies
 
 ## Overview of Project
-Jill commends you for all your hard work. Piece by piece, you’ve been building up your skills in data preparation, statistical reasoning, and machine learning. You are now ready to apply machine learning to solve a real-world challenge: credit card risk.
+You and Martha have done your research. You understand what unsupervised learning is used for, how to process data, how to cluster, how to reduce your dimensions, and how to reduce the principal components using PCA. It’s time to put all these skills to use by creating an analysis for your clients who are preparing to get into the cryptocurrency market.
 
-Credit risk is an inherently unbalanced classification problem, as good loans easily outnumber risky loans. Therefore, you’ll need to employ different techniques to train and evaluate models with unbalanced classes. Jill asks you to use `imbalanced-learn` and `scikit-learn` libraries to build and evaluate models using resampling.
+Martha is a senior manager for the Advisory Services Team at Accountability Accounting, one of your most important clients. Accountability Accounting, a prominent investment bank, is interested in offering a new cryptocurrency investment portfolio for its customers. The company, however, is lost in the vast universe of cryptocurrencies. So, they’ve asked you to create a report that includes what cryptocurrencies are on the trading market and how they could be grouped to create a classification system for this new investment.
 
-Using the credit card credit dataset from LendingClub, a peer-to-peer lending services company, you’ll oversample the data using the `RandomOverSampler` and `SMOTE` algorithms, and undersample the data using the `ClusterCentroids` algorithm. Then, you’ll use a combinatorial approach of over and undersampling using the `SMOTEENN` algorithm. Next, you’ll compare two new machine learning models that reduce bias, `BalancedRandomForestClassifier` and `EasyEnsembleClassifier`, to predict credit risk. Once you’re done, you’ll evaluate the performance of these models and make a written recommendation on whether they should be used to predict credit risk.
+The data Martha will be working with is not ideal, so it will need to be processed to fit the machine learning models. Since there is no known output for what Martha is looking for, she has decided to use unsupervised learning. To group the cryptocurrencies, Martha decided on a clustering algorithm. She’ll use data visualizations to share her findings with the board.
 
 ## Deliverables:
 This new assignment consists of three technical analysis deliverables and a written report.
 
-1. ***Deliverable 1:*** Use Resampling Models to Predict Credit Risk
-2. ***Deliverable 2:*** Use the SMOTEENN Algorithm to Predict Credit Risk
-3. ***Deliverable 3:*** Use Ensemble Classifiers to Predict Credit Risk
-4. ***Deliverable 4:*** A Written Report on the Credit Risk Analysis [README.md](https://github.com/emmanuelmartinezs/Credit_Risk_Analysis)
+1. ***Deliverable 1:*** Preprocessing the Data for PCA
+2. ***Deliverable 2:*** Reducing Data Dimensions Using PCA
+3. ***Deliverable 3:*** Clustering Cryptocurrencies Using K-means
+4. ***Deliverable 4:*** Visualizing Cryptocurrencies Results
 
 
 ## Deliverables:
 This new assignment consists of three technical analysis deliverables and a proposal for further statistical study:
 
-* Data Source: ` Module-17-Challenge-Resources.zip` and `LoanStats_2019Q1.csv`
-* Data Tools:  `credit_risk_resampling_starter_code.ipynb` and `credit_risk_ensemble_starter_code.ipynb`.
+* Data Source: `crypto_data.csv`
+* Data Tools:  `crypto_clustering_starter_code.ipynb`.
 * Software: `Python 3.9`, `Visual Studio Code 1.50.0`, `Anaconda 4.8.5`, `Jupyter Notebook 6.1.4` and `Pandas`
 
 
@@ -29,103 +29,80 @@ This new assignment consists of three technical analysis deliverables and a prop
 ![logo](https://github.com/emmanuelmartinezs/Cryptocurrencies/blob/main/Resources/Images/Header.jpg?raw=true)
 
 
-### Supervised Machine Learning and Credit Risk
-#### Predicting Credit Risk
+### Unsupervised Machine Learning and Cryptocurrencies
+#### Using Unsupervised Learning to Discover Unknown Patterns
 
-##### Create a Machine Learning Environment
+##### Challenges of Unsupervised Learning
 
-Your new virtual environment will use Python 3.7 and accompanying Anaconda packages. After creating the new virtual environment, you'll install the imbalanced-learn library in that environment.
+**IMPORTANT**
+> Unsupervised learning isn't the solution for every data analytic challenge. Just because supervised learning might not work for one situation doesn't mean unsupervised learning will work instead. Understanding the data and what can be done with it is an important first step before choosing an algorithm.
 
-**NOTE**
-Consult the [imbalanced-learn documentation](https://imbalanced-learn.readthedocs.io/en/stable/) for additional information about the imbalanced-learn library.
+Recall that unsupervised learning does not take in any pairing of input and outcomes from the data—it only looks at the data as a whole. This can cause some challenges when running the algorithm. Since we won't know the outcome it's predicting, we might not know that the result is correct.
 
-Check out the macOS instructions below, or go down to the Windows instructions.
+This can lead to issues where we're trying to decide if the model has provided any helpful information that we can use to make decisions in the real world. For example, our store owner might run a model that ends up grouping the type of people by how much they're buying. This could be useful in some contexts—for example, knowing who the top spenders are—but it might not help the store owner better organize the store for maximum purchases per person, or understand the differences in product preferences between top purchasers.
 
-**macOS Setup**
-Before we create a new environment in macOS, we'll need to update the global conda environment:
+The only way to determine what an unsupervised algorithm did with the data is to go through it manually or create visualizations. Since there will be a manual aspect, unsupervised learning is great for when you want to explore the data. Sometimes you'll use the information provided to you by the unsupervised algorithm to transition to a more targeted, supervised model.
 
-1. If your PythonData environment is activated when you launch the command line, deactivate the environment.
+As with supervised learning, data should be preprocessed into a correct format with only numerical values, null value determination, and so forth. The only difference is unsupervised learning doesn't have a target variable—it only has input features that will be used to find patterns in the data. It's important to carefully select features that could help to find those patterns or create groups.
 
-2. Update the global conda environment by typing conda update conda and press Enter.
+The next section will cover data preprocessing and data munging, and provide a refresher on Pandas and data cleaning. First, you'll need to install the necessary libraries for practice.
 
-3. After all the packages are collected, you'll see the prompt Proceed ([y]/n)?. Press the "Y" key (for "yes") and press Enter.
+##### Install Your Tools
+If you already have some libraries installed from previous modules, you may skip those parts of the installation instructions.
 
-4. In the command line, type conda create -n mlenv python=3.7 anaconda. The name of your new environment is mlenv.
+##### Scikit-learn
+To install the Scikit-learn library, follow these steps:
 
-5. After all the packages are collected, you'll see the prompt Proceed ([y]/n)?. Press the "Y" key (for "yes") and press Enter.
+1. Open your terminal and activate your PythonData environment.
 
-6. Activate your mlenv environment by typing conda activate mlenv and press Enter.
+2. Run the following command:
 
-##### Check Dependencies for the imbalanced-learn Package
-Before we install the imbalanced-learn package, we need to confirm that all of the package dependencies are satisfied in our mlenv environment:
+`conda install scikit-learn`
 
-* NumPy, version 1.11 or later
-* SciPy, version 0.17 or later
-* Scikit-learn, version 0.21 or later
+3. After installation, you're all set.
 
+##### Plotly
+To install the Python Plotly library, follow these steps:
 
-On the command line, you can check all packages that begin with numpy, scipy, and scikit-learn when you type conda list | grep and press Enter. The grep command will search for patterns of the text numpy in our conda list. For example, when we type conda list | grep numpy and press Enter, the output should be as follows:
+1. Open your terminal and activate your PythonData environment.
 
-![d1](https://github.com/emmanuelmartinezs/Credit_Risk_Analysis/blob/main/Resources/Images/s1.png)
+2. Run the following command:
 
-As you can see, our numpy dependency meets the installation requirements for the imbalanced-learn package.
+`conda install plotly`
 
-Additionally, you can type python followed by the command argument -c, and then "import `package_name`;print(`package_name`.__version__)" to verify which version of a package is installed in an environment, where `package_name` is the name of the package you want to verify.
+3. After installation, you're all set.
 
-Type python -c "import numpy ;print(numpy.__version__)" and then press Enter to see the version of numpy in your mlenv environment.
+##### hvPlot
+To install the hvPlot visualization library, follow these steps:
 
-##### Windows Setup
-Before we create a new environment in Windows, we'll need to update the global conda environment:
+1. Open your terminal and activate your PythonData environment.
 
-1. Launch the Anaconda Prompt, or open your PythonData Anaconda Prompt and deactivate this environment.
+2. Run the following command:
 
-2. Update the global conda environment by typing conda update conda and press Enter
+`conda install -c pyviz hvplot`
 
-3. After all the packages are collected, you'll see the prompt Proceed ([y]/n)?. Press the "Y" key (for "yes") and press Enter.
+3. After installation, you're all set.
 
-4. In the command line, type conda create -n mlenv python=3.7 anaconda.
+##### Steps for Preparing Data
+**After** digging into unsupervised learning a bit, you realize that your first step in convincing Accountability Accountants to invest in cryptocurrency is to preprocess the data.
 
-5. After all the packages are collected, you'll see the prompt Proceed ([y]/n)?. Press the "Y" key (for "yes") and press Enter.
+You and Martha open up the dataset to get started preprocessing it. Together, you will want to manage unnecessary columns, rows with null values, and mixed data types before turning your algorithm loose.
 
-6. Activate your mlenv environment by typing conda activate mlenv and press Enter, or open your Anaconda Prompt (mlenv).
+##### Data Selection
+Before moving data to our unsupervised algorithms, complete the following steps for preparing data:
 
-##### Check Dependencies for the imbalanced-learn Package
-Before we install the imbalanced-learn package, we need to confirm that all of the package dependencies are satisfied in our mlenv environment:
+1. Data selection
+2. Data processing
+3. Data transformation
 
-* NumPy, version 1.11 or later
-* SciPy, version 0.17 or later
-* Scikit-learn, version 0.21 or later
+Data selection entails making good choices about which data will be used. Consider what data is available, what data is missing, and what data can be removed. For example, say we have a dataset on city weather that consists of temperature, population, latitude and longitude, date, snowfall, and income. After looking through the columns, we can readily see that population and income data don't affect weather. We might also notice some rows are missing temperature data. In the data selection process, we would remove the population and income columns as well as any rows that don't record temperatures.
 
+##### Data Processing
+Data processing involves organizing the data by formatting, cleaning, and sampling it. In our dataset on city weather, if the date column has two different formats—mm-dd-yyyy (e.g., 01-23-1980) and month-data-year (e.g., jan-23-1980)—we would convert all dates to the same format.
 
-In the Anaconda Prompt, you can check all packages that begin with numpy, scipy, and scikit-learn when you type conda list | findstr and press Enter. The findstr command will search for patterns of the text in our conda list. For example, when we type conda list | findstr numpy and press Enter, the output should be as follows:
+##### Data Transformation
+Data transformation entails transforming our data into a simpler format for storage and future use, such as a CSV, spreadsheet, or database file. Once our weather data is cleaned and processed, we would export the final version of the data as a CSV file for future analysis.
 
-![d1](https://github.com/emmanuelmartinezs/Credit_Risk_Analysis/blob/main/Resources/Images/s2.png)
-
-From the output, we can see that our numpy dependency meets the installation requirements for the imbalanced-learn package.
-
-Additionally, you can type python followed by the command argument -c, and then "import `package_name`;print(`package_name`.__version__)" to verify which version of a package is installed in an environment, where `package_name` is the name of the package you want to verify:
-
-Type python -c "import numpy;print(numpy.__version__)" and press Enter to see the version of numpy in your mlenv environment.
-
-
-##### Install the imbalanced-learn Package
-Now that our dependencies have been met, we can install the imbalanced-learn package in our mlenv environment.
-
-With the mlenv environment activated, either in the Terminal in macOS or in the Anaconda Prompt (mlenv) in Windows, type the following:
-
-`conda install -c conda-forge imbalanced-learn`
-
-Then press Enter.
-
-After all the packages are collected, you'll see the prompt `Proceed` `([y]/n)?`. Press the "Y" key (for "yes") and press Enter.
-
-
-##### Add the Machine Learning Environment to Jupyter Notebook
-To use the mlenv environment we just created in the Jupyter Notebook, we need to add it to the kernels. In the command line, type `python -m ipykernel install --user --name mlenv` and press Enter.
-
-To check if the mlenv is installed, launch the Jupyter Notebook and click the "New" dropdown menu:
-
-![d1](https://github.com/emmanuelmartinezs/Credit_Risk_Analysis/blob/main/Resources/Images/s3.png)
 
 Now we can begin our machine learning journey.
 
